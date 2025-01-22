@@ -19,15 +19,23 @@ gps = UART(1, 9600, tx=Pin(11), rx=Pin(12))
 while True:
     if gps.any():
         gps_data = gps.readline()
+        update_results = None
         if gps_data:
             # populate gps fields
             for c in gps_data:
-                gps_parser.update(c)
+                update_results = gps_parser.update(c)
 
-        # print raw data and gps obj fields
-        print(gps_data)
-        print(gps_parser.latitude)
-        print(gps_parser.longitude)
-        print(gps_parser.altitude)
+            # print raw data and gps obj fields
+            print(gps_data)
 
+            if update_results:
+                print(gps_parser.latitude)
+                print(gps_parser.longitude)
+                print(gps_parser.altitude)
+            else:
+                print("ERROR: invalid GPS sentence")
+        else:
+            print("DEBUG: no GPS data received from module")
+
+    # prevent spamming the LoRa
     sleep(0.5)
