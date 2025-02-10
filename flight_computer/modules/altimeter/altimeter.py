@@ -8,10 +8,10 @@ import sdcard
 i2c = I2C(0, sda=Pin(0), scl=Pin(1), freq=400000)
 
 # SD CARD INIT (SPI)
-spi = SPI(0, baudrate=1000000, polarity=0, phase=0, sck=Pin(2), mosi=Pin(3), miso=Pin(4))
+spi = SPI(0, baudrate=4000000, polarity=0, phase=0, sck=Pin(2), mosi=Pin(3), miso=Pin(4))
 cs = Pin(5, Pin.OUT)
 
-file_path = "/sd/altimeter_data.txt"
+file_path = "../../../sd/altimeter_data.txt"
 
 # MODULE CLASS
 class Altimeter:

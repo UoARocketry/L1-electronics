@@ -2,7 +2,9 @@ from time import sleep
 import _thread
 
 from modules.micropyGPS import MicropyGPS
+from modules.altimeter.altimeter import Altimeter
 from modules.board import *
+
 
 
 # THREAD FUNCTIONS
@@ -20,5 +22,12 @@ def radio_task():
 
         sleep(0.5)
 
+def altimeter_task():
+    altimeter = Altimeter()
+    while True:
+        altimeter.log_data()
+        sleep(0.5)
+
 
 radio_thread = _thread.start_new_thread(radio_task, ())
+altimeter_thread = _thread.start_new_thread(altimeter_task, ())
