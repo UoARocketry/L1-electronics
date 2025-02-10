@@ -1,13 +1,13 @@
 """
 Test script for the Altimeter (BMP280) module.
-- Verifies sensor data reading.
-- Checks SD card logging functionality.
+- verifies sensor data reading.
+- checks SD card logging.
 """
 
 from time import sleep
 from modules.altimeter.altimeter import Altimeter
 
-altimeter = Altimeter()
+altimeter = Altimeter("../sd/altimeter_data.txt")
     
 while True:
     temperature, pressure = altimeter.read_data()
