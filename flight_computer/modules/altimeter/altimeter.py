@@ -4,20 +4,26 @@ import uos
 import bmp280
 import sdcard
 
+# BOARD DEFNS
+I2C_SDA_PIN = 6
+I2C_SCL_PIN = 7
+
+SPI_SCK_PIN = 2
+SPI_MOSI_PIN = 3
+SPI_MISO_PIN = 4
+SPI_CS_PIN = 5
+
 # ALTIMETER (BMP280) INIT (I2C)
-i2c = I2C(0, sda=Pin(0), scl=Pin(1), freq=400000)
+i2c = I2C(0, sda=Pin(I2C_SDA_PIN), scl=Pin(I2C_SCL_PIN), freq=400000)
 
 # SD CARD INIT (SPI)
-spi = SPI(0, baudrate=4000000, polarity=0, phase=0, sck=Pin(2), mosi=Pin(3), miso=Pin(4))
-cs = Pin(5, Pin.OUT)
+spi = SPI(0, baudrate=4000000, polarity=0, phase=0, sck=Pin(SPI_SCK_PIN), mosi=Pin(SPI_MOSI_PIN), miso=Pin(SPI_MISO_PIN))
+cs = Pin(SPI_CS_PIN, Pin.OUT)
 
-file_path = "../../../sd/altimeter_data.txt"
-
-# MODULE CLASS
 class Altimeter:
     def __init__(self):
         self.bmp = bmp280.BMP280(i2c)
-        self.file_path = file_path
+        self.file_path = "../../../sd/altimeter_data.txt"
         self._init_sd_card()
         self._init_sd_mount()
 
