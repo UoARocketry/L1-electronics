@@ -3,9 +3,11 @@ import _thread
 
 from modules.micropyGPS import MicropyGPS
 from modules.altimeter.altimeter import Altimeter
+from modules.altimeter.sdcard_manager import SDCardManager
 from modules.board import *
 
-
+# Shared SD card manager
+sd_manager = SDCardManager()
 
 # THREAD FUNCTIONS
 def radio_task():
@@ -23,11 +25,12 @@ def radio_task():
         sleep(0.5)
 
 def altimeter_task():
-    altimeter = Altimeter()
+    altimeter = Altimeter(sd_manager)
     while True:
         altimeter.log_data()
         sleep(0.5)
 
 
 radio_thread = _thread.start_new_thread(radio_task, ())
-altimeter_thread = _thread.start_new_thread(altimeter_task, ())
+# Run altimeter_task in the main thread
+altimeter_task()
