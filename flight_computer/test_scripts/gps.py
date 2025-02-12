@@ -10,8 +10,8 @@ from machine import Pin, UART
 from time import sleep
 
 # additional installations: https://github.com/inmcm/micropyGPS
-from modules.micropyGPS import MicropyGPS
-from modules.board import *
+from flight_computer.libs.micropyGPS import MicropyGPS
+from flight_computer.modules.gps import *
 
 # GPS pins:
 # TX - 13 (board RX)

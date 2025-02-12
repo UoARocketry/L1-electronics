@@ -6,8 +6,8 @@ Test script for the radio/lora - mainly testing transmission
 from time import sleep
 
 # additional installations: https://github.com/martynwheeler/u-lora
-from modules.ulora import LoRa
-from modules.board import *
+from flight_computer.libs.ulora import LoRa
+from flight_computer.modules.lora import *
 
 lora = LoRa(
     (LORA_CHANNEL, LORA_SCK, LORA_MOSI, LORA_MISO),
