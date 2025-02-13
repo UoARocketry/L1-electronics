@@ -1,6 +1,7 @@
 from machine import I2C, Pin
 import flight_computer.libs.bmp280 as bmp280
 from flight_computer.modules.sdcard_manager import SDCardManager
+from flight_computer.modules.error_logger import log_error
 
 I2C_SDA_PIN = 0
 I2C_SCL_PIN = 1
@@ -8,7 +9,9 @@ I2C_SCL_PIN = 1
 
 class Altimeter:
     def __init__(
-        self, sd_manager: SDCardManager, sd_file_path="../../sd/altimeter_data.txt"
+        self,
+        sd_manager: SDCardManager,
+        sd_file_path: str = "/sd/altimeter_data.txt",
     ):  # Functionality to initialise file path
         self.i2c = I2C(0, sda=Pin(I2C_SDA_PIN), scl=Pin(I2C_SCL_PIN), freq=400000)
         self.bmp = bmp280.BMP280(self.i2c)
@@ -21,7 +24,7 @@ class Altimeter:
             pressure = self.bmp.pressure
             return temperature, pressure
         except Exception as e:
-            print(f"Error reading sensor data: {e}")
+            log_error(f"ERROR: Reading sensor data failed: {e}")
             return None, None
 
     def log_data(self):

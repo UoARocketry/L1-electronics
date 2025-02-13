@@ -1,4 +1,5 @@
 from flight_computer.libs.ulora import LoRa
+from flight_computer.modules.error_logger import log_error
 
 LORA_CHANNEL = 0
 LORA_SCK = 18
@@ -26,5 +27,5 @@ class LORA(object):
     def transmit_message(self, message: str):
         self.lora.send(message, LORA_RX_ADDR)
         if not self.lora.wait_packet_sent():
-            # todo: log error in the SD card
-            pass
+            # log error in the SD card
+            log_error("ERROR: Failed to transmit from LoRa")

@@ -1,4 +1,5 @@
 from machine import SPI, Pin
+from flight_computer.modules.error_logger import log_error
 import uos
 import flight_computer.libs.sdcard as sdcard
 import _thread
@@ -36,7 +37,7 @@ class SDCardManager:
             self.sd_mounted = True
             print("SD card mounted successfully.")
         except Exception as e:
-            print(f"Warning: SD card mount failed: {e}")
+            log_error(f"WARNING: SD card mount failed: {e}")
             self.sd_mounted = False  # Mark SD unavailable
 
     def log(self, file_path, text):
@@ -47,14 +48,14 @@ class SDCardManager:
                 print("SD card not mounted. Attempting to remount...")
                 self._mount_sd()
                 if not self.sd_mounted:  # If still not mounted, skip logging
-                    print("SD card still not available. Skipping log.")
+                    log_error("WARNING: SD card still not available. Skipping log.")
                     return
 
             try:
                 with open(file_path, "a") as f:
                     f.write(text + "\n")
             except Exception as e:
-                print(f"Error writing to SD card: {e}")
+                log_error(f"ERROR: Writing to SD card failed: {e}")
                 self.sd_mounted = False
 
     def unmount_sd(
@@ -72,4 +73,4 @@ class SDCardManager:
                 self.sd_mounted = False
                 print("SD card unmounted successfully.")
             except Exception as e:
-                print(f"Error unmounting SD card: {e}")
+                log_error(f"ERROR: Unmounting SD card failed: {e}")

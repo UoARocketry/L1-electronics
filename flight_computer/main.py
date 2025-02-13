@@ -6,9 +6,11 @@ from flight_computer.modules.altimeter import Altimeter
 from flight_computer.modules.sdcard_manager import SDCardManager
 from flight_computer.modules.gps import GPS
 from flight_computer.modules.lora import LORA
+from flight_computer.modules.error_logger import log_init
 
 # Shared SD card manager
 sd_manager = SDCardManager()
+log_init(sd_manager)
 
 
 # THREAD FUNCTIONS
