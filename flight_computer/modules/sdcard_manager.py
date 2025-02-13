@@ -1,5 +1,5 @@
 from machine import SPI, Pin
-from flight_computer.modules.error_logger import log_error
+from flight_computer.modules.error_logger import log_error, log_debug
 import uos
 import flight_computer.libs.sdcard as sdcard
 import _thread
@@ -35,7 +35,7 @@ class SDCardManager:
                 self.vfs, "/sd"
             )  # Need to change depending on where this file will be located when finalised
             self.sd_mounted = True
-            print("SD card mounted successfully.")
+            log_debug("SD card mounted successfully.")
         except Exception as e:
             log_error(f"WARNING: SD card mount failed: {e}")
             self.sd_mounted = False  # Mark SD unavailable
@@ -45,7 +45,7 @@ class SDCardManager:
         # multiple tries will lead to an exception that will incorrectly unmount the sd
         with self.lock:
             if not self.sd_mounted:  # If SD card is not mounted, try to mount it
-                print("SD card not mounted. Attempting to remount...")
+                log_debug("SD card not mounted. Attempting to remount...")
                 self._mount_sd()
                 if not self.sd_mounted:  # If still not mounted, skip logging
                     log_error("WARNING: SD card still not available. Skipping log.")
@@ -62,7 +62,7 @@ class SDCardManager:
         self,
     ):  # For unmounting SD card, although not too sure how to add this to the main.py file
         if not self.sd_mounted:  # If SD card not mounted, can't unmount
-            print("SD card not mounted. Nothing to unmount.")
+            log_debug("SD card not mounted. Nothing to unmount.")
             return
 
         with self.lock:  # Prevent unmounting while another thread is writing
@@ -71,6 +71,6 @@ class SDCardManager:
                     "/sd"
                 )  # Need to change depending on where this file will be located when finalised
                 self.sd_mounted = False
-                print("SD card unmounted successfully.")
+                log_debug("SD card unmounted successfully.")
             except Exception as e:
                 log_error(f"ERROR: Unmounting SD card failed: {e}")

@@ -10,7 +10,7 @@ from flight_computer.modules.error_logger import log_init
 
 # Shared SD card manager
 sd_manager = SDCardManager()
-log_init(sd_manager)
+log_init(sd_manager, True)
 
 
 # THREAD FUNCTIONS

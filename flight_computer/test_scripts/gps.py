@@ -12,6 +12,7 @@ from time import sleep
 # additional installations: https://github.com/inmcm/micropyGPS
 from flight_computer.libs.micropyGPS import MicropyGPS
 from flight_computer.modules.gps import *
+from flight_computer.modules.error_logger import log_debug
 
 # GPS pins:
 # TX - 13 (board RX)
@@ -34,16 +35,16 @@ while True:
                 update_results = gps_parser.update(c)
 
             # print raw data and gps obj fields
-            print(gps_data)
+            log_debug(gps_data)
 
             if update_results:
-                print(gps_parser.latitude)
-                print(gps_parser.longitude)
-                print(gps_parser.altitude)
+                log_debug(gps_parser.latitude)
+                log_debug(gps_parser.longitude)
+                log_debug(gps_parser.altitude)
             else:
-                print("ERROR: invalid GPS sentence")
+                log_debug("ERROR: invalid GPS sentence")
         else:
-            print("DEBUG: no GPS data received from module")
+            log_debug("DEBUG: no GPS data received from module")
 
     # prevent spamming the LoRa
     sleep(0.5)
